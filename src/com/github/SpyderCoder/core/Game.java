@@ -1,10 +1,13 @@
 package com.github.SpyderCoder.core;
 
+import com.github.SpyderCoder.asteroid.Main;
+
 public class Game
 {
     private State state = State.START;
     private static Window window;
     private static Render render;
+    private static Main main;
     private int width = 30;
     private int height = 30;
     private int refreshRateMs = 100;
@@ -12,12 +15,7 @@ public class Game
     public void run()
     {
         start();
-
-        while(state != State.STOP)
-        {
-            render.draw(refreshRateMs);
-        }
-
+        update();
         stop();
     }
 
@@ -27,6 +25,17 @@ public class Game
         window = new Window(width, height);
         render = new Render();
         render.disableCursor();
+        main = new Main();
+        main.start();
+    }
+    
+    private void update()
+    {
+        while(state != State.STOP)
+        {
+            main.update();
+            render.draw(refreshRateMs);
+        }
     }
 
     private void stop()
